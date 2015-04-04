@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name Steam Group Filter Games
+// @updateURL https://raw.githubusercontent.com/Davidj361/SteamGroupFilterGames/master/steamgroupfiltergames.user.js
 // @version 1
-// @namespace steamgroupfiltergames
+// @namespace https://github.com/Davidj361/SteamGroupFilterGames
 // @description Filter Steam group members by what game is being played
 // @include https://steamcommunity.com/groups/*
 // @include http://steamcommunity.com/groups/*
 // @require https://steamcommunity-a.akamaihd.net/public/javascript/jquery-1.11.1.min.js
-// @resource  loadingIcon http://www.nysut.org/_Images/_global/loading.gif
+// @resource  loadingIcon https://raw.githubusercontent.com/Davidj361/SteamGroupFilterGames/master/loading.gif
 // @run-at document-end
 // @grant  unsafeWindow
 // @grant GM_getResourceURL
@@ -289,6 +290,17 @@ var steamGroupFilterGames = function() {
 
 // window.addEventListener ("load", hookSteamAjax, false);
 
+
+function GM_main () {
+    window.gmScripts_GlobalVar = 'greasy';
+
+    console.log ("In GM script, local global: ", window.targetPages_GlobalVar);
+    console.log ("In GM script, script global: ", window.gmScripts_GlobalVar);
+
+    window.addEventListener ("DOMContentLoaded", function() {
+        console.log ("In GM script, local global, after ready: ", window.targetPages_GlobalVar);
+    }, false);
+
 var check = function () {
     console.log("yep");
     if (typeof unsafeWindow.OnGroupContentLoadComplete === "function") {
@@ -303,3 +315,21 @@ var check = function () {
     setTimeout(check, 100);
 };
 check();
+}
+
+addJS_Node (null, null, GM_main);
+
+function addJS_Node (text, s_URL, funcToRun, runOnLoad) {
+    var D                                   = document;
+    var scriptNode                          = D.createElement ('script');
+    if (runOnLoad) {
+        scriptNode.addEventListener ("load", runOnLoad, false);
+    }
+    scriptNode.type                         = "text/javascript";
+    if (text)       scriptNode.textContent  = text;
+    if (s_URL)      scriptNode.src          = s_URL;
+    if (funcToRun)  scriptNode.textContent  = '(' + funcToRun.toString() + ')()';
+
+    var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
+    targ.appendChild (scriptNode);
+}
