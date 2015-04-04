@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name Steam Group Filter Games
-// @updateURL https://raw.githubusercontent.com/Davidj361/SteamGroupFilterGames/master/steamgroupfiltergames.user.js
 // @version 1.0
 // @namespace https://github.com/Davidj361/SteamGroupFilterGames
 // @description Filter Steam group members by what game they're playing
 // @include https://steamcommunity.com/groups/*
 // @include http://steamcommunity.com/groups/*
 // @run-at document-start
-// @grant  unsafeWindow
+// @grant unsafeWindow
+// @downloadURL https://raw.githubusercontent.com/Davidj361/SteamGroupFilterGames/master/steamgroupfiltergames.user.js
+// @updateURL https://raw.githubusercontent.com/Davidj361/SteamGroupFilterGames/master/steamgroupfiltergames.user.js
 // ==/UserScript== 
 
 // My god I can't believe I'm doing this
