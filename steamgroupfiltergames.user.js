@@ -45,12 +45,10 @@ function steamGroupFilterGames_setupStartupFilter() {
             return;
         }
 
-
         var main = function(jNode) {
             if (steamGroupFilterStarted)
                 return;
             steamGroupFilterStarted = true;
-
 
             // Get the max page number
             var n = (function () {
@@ -72,14 +70,16 @@ function steamGroupFilterGames_setupStartupFilter() {
             return result;
             })();
 
+            // Global Script Variables
             var curr = 1; // Current page loaded
             var game = "";
             var groupUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
             var nRetrieved = 0; // Number of users added and that passed the filter
-            var stopped = false;
+            var stopped = false; // For the stop button
             var loadIconUrl = "https://raw.githubusercontent.com/Davidj361/SteamGroupFilterGames/master/loading.gif";
 
             var startRetrieve = function() {
+                $(".group_paging").first().empty(); // clear the old stuff
                 // Show that we're retrieving
                 var $loaderIcon = $("<img />", {
                     id: 'loaderIcon',
@@ -94,9 +94,18 @@ function steamGroupFilterGames_setupStartupFilter() {
                     style: "text-align: center;",
                     class: "btn_green_white_innerfade btn_small_thin",
                     click: function() {
-                        $("#stopFilterButton").append("<span>Stop</span>");
-                        stopped = true;
-                        nRetrieved = 51;
+                        if (stopped) {
+                            $("#stopFilterButton").find("span").text("Stop");
+                            stopped = false;
+                            $("#loaderIcon").show();
+                            $("#steamgroupfiltergamesPageCount").show();
+                            retrieveDataFromNextPage();
+                        } else {
+                            $("#stopFilterButton").find("span").text("Continue");
+                            stopped = true;
+                            $("#loaderIcon").hide();
+                            $("#steamgroupfiltergamesPageCount").hide();
+                        }
                     }
                 });
                 $(".group_paging").first().append($stopButton);
@@ -147,9 +156,11 @@ function steamGroupFilterGames_setupStartupFilter() {
 
                 // So we wait for all gets to be done with
                 $.when.apply($, gets).then(function() {
-                    if(curr != n && nRetrieved < 51) {
+                    if(curr != n && nRetrieved < 51 && !stopped) {
                         $("#steamgroupfiltergamesPageCount").text("Filtering Page " + curr + "/" + n);
                         retrieveDataFromNextPage();
+                    } else if (stopped) {
+                        // We pressed the stop button
                     } else {
                         $(".group_paging").first().empty();
                         $(".group_paging").last().show();
@@ -159,6 +170,22 @@ function steamGroupFilterGames_setupStartupFilter() {
                             $(".group_paging").last().append("<div>Reached End</div>");
                         } else if (nRetrieved >= 51) {
                             nRetrieved = 0; // Reset the count
+                            // Create a more button that adds more players from each page when you click
+                            // It disappears after it reaches the max page
+                            var $moreButton = $("<div/>", {
+                                id: "filterMoreButton",
+                                style: "text-align: center;",
+                                class: "btn_green_white_innerfade btn_small_thin",
+                                click: function() {
+                                    startRetrieve();
+                                    if (curr == n) {
+                                        $(".group_paging").empty();
+                                        $(".group_paging").last().text("Reached End");
+                                    }
+                                }
+                            });
+                            $(".group_paging").first().append($moreButton);
+                            $("#filterMoreButton").append("<span>\\|/ Get 51 Users More \\|/</span>");
                         }
                     }
                 });
@@ -178,22 +205,6 @@ function steamGroupFilterGames_setupStartupFilter() {
                 $("#steamgroupfiltergamesSpacer").remove();
                 // $("#memberList").append("<div id='steamgroupfiltergamesSpacer' style='clear: left;'></div><div style='clear: left;'></div>"); // Spacers due to horrible CSS
 
-                // Create a more button that adds more players from each page when you click
-                // It disappears after it reaches the max page
-                var $moreButton = $("<div/>", {
-                    id: "filterMoreButton",
-                    style: "text-align: center;",
-                    class: "btn_green_white_innerfade btn_small_thin",
-                    click: function() {
-                        startRetrieve();
-                        if (curr == n) {
-                            $(".group_paging").empty();
-                            $(".group_paging").last().text("Reached End");
-                        }
-                    }
-                });
-                $(".group_paging").last().append($moreButton);
-                $("#filterMoreButton").append("<span>\\|/ Filter Next 50 Users \\|/</span>");
                 $(".group_paging").css("text-align", "center"); // CSS Fix
                 $(".group_paging").css("height", "auto"); // CSS Fix
 
