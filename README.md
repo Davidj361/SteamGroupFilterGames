@@ -15,3 +15,5 @@ Make sure you have [greasemonkey installed](https://addons.mozilla.org/en-Us/fir
 
 ##Changelog
 - Release
+
+![Screenshot](https://i.imgur.com/ruMqtTx.png)
