@@ -1,4 +1,4 @@
-SteamGroupFilterGames
+Steam Group Filter Games
 =======
 
 Filter Steam group members by what game they're playing.
