@@ -11,7 +11,7 @@ Link: ['steamgroupfiltergames.user.js'](https://raw.githubusercontent.com/Davidj
 
 ### Firefox:
 
-Make sure you have greasemonkey installed and just click on the previous link.
+Make sure you have ['greasemonkey installed'](https://addons.mozilla.org/en-Us/firefox/addon/greasemonkey/) and just click on the previous link.
 
 ##Changelog
 - Release
