@@ -11,9 +11,7 @@
 // @updateURL https://raw.githubusercontent.com/Davidj361/SteamGroupFilterGames/master/steamgroupfiltergames.user.js
 // ==/UserScript== 
 
-// My god I can't believe I'm doing this
-// God kill me now
-// A lot of shit was put in to deal with shitty AJAX that Steam is doing and which this script relies on 
+// Alot was put in to deal with the AJAX that Steam is doing and which this script relies on 
 // And the hardest part was dealing with Greasemonkey's sandbox aspect
 // Everything outside the scope of this function won't be detected at runtime
 function steamGroupFilterGames_setupStartupFilter() {
